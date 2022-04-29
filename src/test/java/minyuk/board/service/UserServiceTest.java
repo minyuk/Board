@@ -10,6 +10,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Transactional
@@ -35,6 +36,23 @@ class UserServiceTest {
         //then
         assertEquals(user, userRepository.findOne(userId));
     }
+    
+    @Test
+    public void 중복_회원_예약() throws Exception {
+        //given
+        User user1 = new User();
+        user1.setLoginId("minyuk");
+
+        User user2 = new User();
+        user2.setLoginId("minyuk");
+
+        //when
+        userService.join(user1);
+        
+        //then
+        assertThrows(IllegalStateException.class, () -> userService.join(user2));
+     }
+        
 
 
 }
