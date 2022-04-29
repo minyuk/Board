@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -32,7 +33,7 @@ public class UserService {
     }
 
     private void validateDuplicateUser(User user) {
-        List<User> findUser = userRepository.findByLoginId(user.getLoginId());
+        Optional<User> findUser = userRepository.findByLoginId(user.getLoginId());
         if (!findUser.isEmpty()) {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
