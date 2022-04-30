@@ -17,11 +17,17 @@ public class AttachFile {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    private String uploadFileName;
-    private String storeFileName;
+    private FileInfo fileInfo;
 
-    public AttachFile(String uploadFileName, String storeFileName) {
-        this.uploadFileName = uploadFileName;
-        this.storeFileName = storeFileName;
+    //==생성 메서드==//
+    public static AttachFile createAttachFile(FileInfo fileInfo) {
+        AttachFile attachFile = new AttachFile();
+        attachFile.setFileInfo(fileInfo);
+
+        return attachFile;
+    }
+
+    public void changeFile(FileInfo fileInfo) {
+        this.fileInfo = fileInfo;
     }
 }

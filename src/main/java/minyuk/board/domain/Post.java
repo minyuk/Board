@@ -1,6 +1,7 @@
 package minyuk.board.domain;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter
+@Getter @Setter
 public class Post {
 
     @Id @GeneratedValue
@@ -32,6 +33,22 @@ public class Post {
 
     private LocalDateTime updateAt;
 
+    //==생성 메서드==//
+    public static Post createPost(User user, String title, String contents, AttachFile... attachFiles) {
+        Post post = new Post();
+        post.setUser(user);
+        for (AttachFile attachFile : attachFiles) {
+            post.addAttachFile(attachFile);
+        }
+        post.setTitle(title);
+        post.setContents(contents);
+        post.setViewCount(1L);
+        post.setCreateAt(LocalDateTime.now());
+        post.setUpdateAt(LocalDateTime.now());
+
+        return post;
+    }
+
 
     //==연관관계 메소드==//
     public void setUser(User user) {
@@ -39,7 +56,7 @@ public class Post {
         user.getPosts().add(this);
     }
 
-    public void setFile(AttachFile attachFile) {
+    public void addAttachFile(AttachFile attachFile) {
         attachFiles.add(attachFile);
         attachFile.setPost(this);
     }
