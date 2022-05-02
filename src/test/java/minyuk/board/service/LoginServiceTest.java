@@ -16,10 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class LoginServiceTest {
-
-    @Autowired
-    UserRepository userRepository;
-
     @Autowired
     UserService userService;
 
@@ -35,7 +31,7 @@ class LoginServiceTest {
 
         //when
         Long userId = userService.join(user);
-        User findUser = userRepository.findOne(userId);
+        User findUser = userService.findOne(userId);
         User loginUser1 = loginService.login("kmh12345", "1234");
         User loginUser2 = loginService.login("kmh1234", "1234");
 
