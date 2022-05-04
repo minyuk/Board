@@ -22,10 +22,15 @@
     line-height: 40px;
     padding-bottom: 19px;
 }
+
+    .home {
+        color: #ecb358;
+    }
+
   /* Custom page footer */
   .footer {
     padding-top: 19px;
-    color: #777;
+    color: #ecb358;
 
    border-top: 1px solid #e5e5e5;
 }
@@ -68,6 +73,9 @@
     .header {
       margin-bottom: 30px;
 }
+    .footer {
+        margin-top: 100px;
+    }
 
     /* Remove the bottom border on the jumbotron for visual effect */
     .jumbotron {
