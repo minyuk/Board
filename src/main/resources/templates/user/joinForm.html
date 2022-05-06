@@ -5,18 +5,19 @@
 
 <div class="user-container">
     <a href="/"><h1 class="login-title">MINYUK</h1></a>
+    <form action="" th:action th:object="${userForm}" method="post">
+        <div class="jumbotron">
+            <input type="text" th:field="*{loginId}" class="form-control form-control-lg"  placeholder="아이디">
 
-    <div class="jumbotron">
-        <input class="form-control form-control-lg" type="text" placeholder="이름">
+            <input type="password" th:field="*{password}" class="form-control form-control-lg"  placeholder="비밀번호">
 
-        <input class="form-control form-control-lg" type="text" placeholder="아이디">
+            <input type="password" th:field="*{passwordCheck}" class="form-control form-control-lg"  placeholder="비밀번호 확인">
 
-        <input class="form-control form-control-lg" type="text" placeholder="비밀번호">
+            <input type="text" th:field="*{name}" class="form-control form-control-lg"  placeholder="이름">
 
-        <input class="form-control form-control-lg" type="text" placeholder="비밀번호 확인">
-
-        <button class="btn btn-secondary btn-lg btn-block mt-4" type="submit">회원가입</button>
-    </div>
+            <button class="btn btn-secondary btn-lg btn-block mt-4" type="submit">회원가입</button>
+        </div>
+    </form>
 </div>
 </body>
 </html>
