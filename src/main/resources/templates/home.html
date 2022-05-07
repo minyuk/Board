@@ -4,10 +4,9 @@
 <body>
 
 <div class="container">
-    <div>
-        <h4 class="mb-3 loginUser" th:text="|로그인: ${user.name}|">로그인 사용자 이름</h4>
+    <div class="login">
+        <button class="btn btn-secondary" th:onclick="|location.href='@{/login}'|" type="button">로그인</button>
     </div>
-
     <div th:replace="fragments/bodyHeader :: bodyHeader" />
     <div>
         <div>
@@ -42,9 +41,6 @@
             </tr>
             </tbody>
         </table>
-    </div>
-    <div>
-        <button type="submit" class="btn btn-secondary my-3 add">글쓰기</button>
     </div>
 
     <div th:replace="fragments/footer :: footer" />

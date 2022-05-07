@@ -7,9 +7,17 @@
     <a href="/"><h1 class="login-title">MINYUK</h1></a>
     <form action="" th:action th:object="${loginForm}" method="post">
         <div class="jumbotron">
-            <input type="text" th:field="*{loginId}" class="form-control form-control-lg" placeholder="아이디">
-
-            <input type="text" th:field="*{password}" class="form-control form-control-lg" placeholder="비밀번호">
+            <div th:if="${#fields.hasGlobalErrors()}">
+                <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>
+            </div>
+            <div>
+                <input type="text" th:field="*{loginId}" class="form-control form-control-lg" placeholder="아이디">
+                <div class="field-error" th:errors="*{loginId}" />
+            </div>
+            <div>
+                <input type="password" th:field="*{password}" class="form-control form-control-lg" placeholder="비밀번호">
+                <div class="field-error" th:errors="*{password}" />
+            </div>
 
             <button class="btn btn-secondary btn-lg btn-block mt-4" type="submit">로그인</button>
         </div>

@@ -22,6 +22,10 @@
         float: right;
     }
 
+    .login, .loginUser {
+        float: right;
+    }
+
     .add {
         float: right;
     }
@@ -42,6 +46,11 @@
         margin-bottom: 80px;
     }
 
+    .field-error {
+        border-color: #dc3545;
+        color: #dc3545;
+        margin-bottom: 10px;
+    }
 
 
 
