@@ -5,17 +5,24 @@
 
 <div class="container">
     <div>
-        <h4 class="mb-3 loginUser" th:text="|로그인: ${user.name}|">로그인 사용자 이름</h4>
+        <form class="form-inline" th:action="@{/logout}" method="post">
+            <div class="form-group mx-sm-3 mb-1">
+                <h5 class="loginUser" th:text="|${user.name}님|">로그인 사용자 이름</h5>
+            </div>
+            <div class="form-group mb-2">
+                <button class="logout btn btn-secondary" type="submit">로그아웃</button>
+            </div>
+        </form>
     </div>
 
     <div th:replace="fragments/bodyHeader :: bodyHeader" />
     <div>
         <div>
             <form class="form-inline">
-                <div class="form-group mb-2">
+                <div class="form-group mb-1">
                     <input type="text" class="form-control" placeholder="검색어"/>
                 </div>
-                <div class="form-group mx-sm-1 mb-2">
+                <div class="form-group mx-sm-1 mb-1">
                     <select class="form-control">
                         <option value="">제목</option>
                     </select>
