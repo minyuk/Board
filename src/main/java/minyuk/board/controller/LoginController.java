@@ -15,18 +15,17 @@ import javax.validation.Valid;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/login")
 public class LoginController {
 
     private final LoginService loginService;
 
-    @GetMapping
+    @GetMapping("/login")
     public String loginForm(@ModelAttribute LoginForm form) {
         return "user/loginForm";
     }
 
-    @PostMapping
-    public String login(@Valid @ModelAttribute LoginForm form, @RequestParam(defaultValue = "/") String redirectURL, BindingResult bindingResult, HttpServletRequest request) {
+    @PostMapping("/login")
+    public String login(@Valid @ModelAttribute LoginForm form, BindingResult bindingResult, HttpServletRequest request) {
 
         if (bindingResult.hasErrors()) {
             return "user/loginForm";
@@ -46,7 +45,18 @@ public class LoginController {
         session.setAttribute("loginUser", loginUser);
 
 
-        return "redirect:" + redirectURL;
+        return "redirect:/posts";
+    }
+
+    @PostMapping("logout")
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+
+        if (session != null) {
+            session.invalidate();
+        }
+
+        return "redirect:/";
     }
 
 }

@@ -1,6 +1,6 @@
-package minyuk;
+package minyuk.board;
 
-import minyuk.board.login.argumentresolver.LoginMemberArgumentResolver;
+import minyuk.board.login.argumentresolver.LoginUserArgumentResolver;
 import minyuk.board.login.interceptor.LoginCheckInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -13,7 +13,7 @@ import java.util.List;
 public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new LoginMemberArgumentResolver());
+        resolvers.add(new LoginUserArgumentResolver());
     }
 
     @Override
