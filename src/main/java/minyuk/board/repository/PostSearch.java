@@ -10,8 +10,6 @@ import javax.persistence.Enumerated;
 public class PostSearch {
 
     private String searchName;
-
-    @Enumerated(EnumType.STRING)
-    private SearchKeyword searchKeyword;
+    private String searchKeyword;
 
 }
