@@ -3,6 +3,7 @@ package minyuk.board.repository;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import minyuk.board.domain.Post;
 import minyuk.board.domain.QPost;
 import minyuk.board.domain.QUser;
@@ -12,6 +13,7 @@ import org.springframework.util.StringUtils;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class PostRepository {
@@ -40,28 +42,20 @@ public class PostRepository {
                 .select(post)
                 .from(post)
                 .join(post.user, user)
-                .where(nameLike(postSearch.getUserName()),
-                        titleLike(postSearch.getTitle()))
+                .where(searchLike(postSearch.getSearchName(), postSearch.getSearchKeyword()))
                 .limit(1000)
                 .fetch();
     }
 
-    private BooleanExpression nameLike(String nameCond) {
-        if (!StringUtils.hasText(nameCond)) {
+    private BooleanExpression searchLike(String name, SearchKeyword keyWord) {
+        log.info("keyword={}", keyWord);
+        log.info("name={}", name);
+        if (keyWord == null || !StringUtils.hasText(name)) {
             return null;
         }
 
-        return QUser.user.name.like(nameCond);
+        //return QPost.post.title.like(name);
+        return QUser.user.name.like(name);
     }
-
-    private BooleanExpression titleLike(String titleCond) {
-        if (!StringUtils.hasText(titleCond)) {
-            return null;
-        }
-
-        return QPost.post.title.like(titleCond);
-    }
-
-
 
 }
