@@ -42,27 +42,9 @@ public class PostRepository {
                 .select(post)
                 .from(post)
                 .join(post.user, user)
-//                .where(nameLike(postSearch.getSearchName(), postSearch.getSearchKeyword()),
-//                        titleLike(postSearch.getSearchName(), postSearch.getSearchKeyword()))
                 .where(like(postSearch.getSearchName(), postSearch.getSearchKeyword()))
                 .limit(1000)
                 .fetch();
-    }
-
-    private BooleanExpression nameLike(String name, String keyword) {
-        if (keyword == null || !StringUtils.hasText(name) || !keyword.equals("name")) {
-            return null;
-        }
-
-        return QUser.user.name.like(name);
-    }
-
-    private BooleanExpression titleLike(String name, String keyword) {
-        if (keyword == null || !StringUtils.hasText(name) || !keyword.equals("title")) {
-            return null;
-        }
-
-        return QPost.post.title.like(name);
     }
 
     private BooleanExpression like(String name, String keyword) {
