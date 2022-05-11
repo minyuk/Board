@@ -38,22 +38,22 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>제목</th>
-                <th>작성자</th> <th>작성일</th> <th>조회수</th>
+                <th>제목</th> <th>작성자</th> <th>작성일</th> <th>조회수</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="post : ${posts}">
-                <td th:text="${post.title}"></td>
-                <td th:text="${post.user.name}"></td>
-                <td th:text="${#temporals.format(post.updateAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                <td th:text="${post.viewCount}"></td>
+                <td><a th:href="@{|/post/${post.id}/edit|}" th:text="${post.title}">제목</a></td>
+                <td th:text="${post.user.name}">작성자</td>
+                <td th:text="${#temporals.format(post.updateAt, 'yyyy-MM-dd HH:mm:ss')}">작성일</td>
+                <td th:text="${post.viewCount}">조회수</td>
             </tr>
             </tbody>
         </table>
     </div>
     <div>
-        <button type="submit" class="btn btn-secondary my-3 add">글쓰기</button>
+        <button type="button" class="btn btn-secondary my-3 add"
+                th:onclick="|location.href='@{/post/add}'|">글쓰기</button>
     </div>
 
     <div th:replace="fragments/footer :: footer" />
