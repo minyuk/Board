@@ -1,4 +1,4 @@
-package minyuk.board.controller.form;
+package minyuk.board.controller;
 
 import minyuk.board.domain.User;
 import minyuk.board.login.argumentresolver.Login;
