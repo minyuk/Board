@@ -48,8 +48,18 @@ public class PostService {
         postRepository.remove(findPost);
     }
 
+    @Transactional
+    public void addViewCount(Long postId) {
+        Post post = postRepository.findOne(postId);
+        post.addCount();
+    }
+
     //검색
     public List<Post> findPosts(PostSearch postSearch) {
         return postRepository.findAll(postSearch);
+    }
+
+    public Post findOne(Long postId) {
+        return postRepository.findOne(postId);
     }
 }

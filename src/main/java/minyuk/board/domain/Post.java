@@ -51,6 +51,10 @@ public class Post {
         this.updateAt = LocalDateTime.now();
     }
 
+    public void addCount() {
+        this.viewCount += 1;
+    }
+
     //==연관관계 메소드==//
     public void setUser(User user) {
         this.user = user;
