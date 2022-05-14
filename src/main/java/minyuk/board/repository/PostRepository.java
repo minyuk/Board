@@ -1,12 +1,17 @@
 package minyuk.board.repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import minyuk.board.domain.Post;
 import minyuk.board.domain.QPost;
 import minyuk.board.domain.QUser;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -45,6 +50,33 @@ public class PostRepository {
                 .where(like(postSearch.getSearchName(), postSearch.getSearchKeyword()))
                 .limit(1000)
                 .fetch();
+
+    }
+
+    public Page<Post> findAll(PostSearch postSearch, Pageable pageable) {
+
+        JPAQueryFactory query = new JPAQueryFactory(em);
+        QPost post = QPost.post;
+        QUser user = QUser.user;
+
+        List<Post> posts = query
+                .select(post)
+                .from(post)
+                .join(post.user, user)
+                .where(like(postSearch.getSearchName(), postSearch.getSearchKeyword()))
+                .orderBy(post.updateAt.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        //count 쿼리 분리
+        JPAQuery<Post> countQuery = query
+                .select(post)
+                .from(post)
+                .join(post.user, user)
+                .where(like(postSearch.getSearchName(), postSearch.getSearchKeyword()));
+
+        return PageableExecutionUtils.getPage(posts, pageable, () -> countQuery.fetch().size());
     }
 
     private BooleanExpression like(String name, String keyword) {

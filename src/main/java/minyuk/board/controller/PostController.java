@@ -9,6 +9,10 @@ import minyuk.board.login.argumentresolver.Login;
 import minyuk.board.repository.PostSearch;
 import minyuk.board.service.PostService;
 import minyuk.board.service.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,11 +28,23 @@ public class PostController {
 
     private final PostService postService;
 
-    @GetMapping("/posts")
+//    @GetMapping("/posts")
     public String home(@Login User loginUser, @ModelAttribute PostSearch postSearch, Model model) {
         model.addAttribute("user", loginUser);
 
         List<Post> posts = postService.findPosts(postSearch);
+        model.addAttribute("posts", posts);
+
+        return "post/postList";
+    }
+
+    @GetMapping("/posts")
+    public String home(@Login User loginUser, @ModelAttribute PostSearch postSearch,
+                       @PageableDefault Pageable pageable,
+                       Model model) {
+        model.addAttribute("user", loginUser);
+
+        Page<Post> posts = postService.findPosts(postSearch, pageable);
         model.addAttribute("posts", posts);
 
         return "post/postList";
@@ -85,4 +101,5 @@ public class PostController {
         postService.removePost(postId);
         return "redirect:/posts";
     }
+
 }

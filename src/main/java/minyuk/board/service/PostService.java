@@ -6,6 +6,10 @@ import minyuk.board.domain.User;
 import minyuk.board.repository.PostRepository;
 import minyuk.board.repository.PostSearch;
 import minyuk.board.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,9 +58,17 @@ public class PostService {
         post.addCount();
     }
 
+
     //검색
     public List<Post> findPosts(PostSearch postSearch) {
         return postRepository.findAll(postSearch);
+    }
+
+    public Page<Post> findPosts(PostSearch postSearch, Pageable pageable) {
+        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
+        pageable = PageRequest.of(page, 10); // <- Sort 추가
+
+        return postRepository.findAll(postSearch, pageable);
     }
 
     public Post findOne(Long postId) {

@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.domain.Pageable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -52,7 +53,7 @@ public class Post {
     }
 
     public void addCount() {
-        this.viewCount += 1;
+        this.viewCount++;
     }
 
     //==연관관계 메소드==//
