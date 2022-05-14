@@ -17,44 +17,81 @@
 
     <div th:replace="fragments/bodyHeader :: bodyHeader" />
     <div>
-        <div>
-            <form th:object="${postSearch}" class="form-inline">
-                <div class="form-group mb-1">
-                    <input th:field="*{searchName}" type="text" class="form-control" placeholder="검색어"/>
-                </div>
-                <div class="form-group mx-sm-1 mb-1">
-                    <select th:field="*{searchKeyword}" class="form-control">
-                        <option value="">전체</option>
-                        <option value="title">제목</option>
-                        <option value="name">작성자</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-secondary mb-3">검색</button>
-            </form>
+        <form th:object="${postSearch}" class="form-inline">
+            <div class="form-group mb-1">
+                <input th:field="*{searchName}" type="text" class="form-control" placeholder="검색어"/>
+            </div>
+            <div class="form-group mx-sm-1 mb-1">
+                <select th:field="*{searchKeyword}" class="form-control">
+                    <option value="">전체</option>
+                    <option value="title">제목</option>
+                    <option value="name">작성자</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-secondary mb-3">검색</button>
+        </form>
 
-            <button type="button" class="btn btn-outline-warning">조회순</button>
-            <button type="button" class="btn btn-outline-warning">최신순</button>
-        </div>
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>제목</th> <th>작성자</th> <th>작성일</th> <th>조회수</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="post : ${posts}">
-                <td><a th:href="@{|/post/${post.id}/edit|}" th:text="${post.title}">제목</a></td>
-                <td th:text="${post.user.name}">작성자</td>
-                <td th:text="${#temporals.format(post.updateAt, 'yyyy-MM-dd HH:mm:ss')}">작성일</td>
-                <td th:text="${post.viewCount}">조회수</td>
-            </tr>
-            </tbody>
-        </table>
+        <button type="button" class="btn btn-outline-warning">조회순</button>
+        <button type="button" class="btn btn-outline-warning">최신순</button>
     </div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>제목</th> <th>작성자</th> <th>작성일</th> <th>조회수</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="post : ${posts}">
+            <td><a th:href="@{|/post/${post.id}/edit|}" th:text="${post.title}">제목</a></td>
+            <td th:text="${post.user.name}">작성자</td>
+            <td th:text="${#temporals.format(post.updateAt, 'yyyy-MM-dd HH:mm:ss')}">작성일</td>
+            <td th:text="${post.viewCount}">조회수</td>
+        </tr>
+        </tbody>
+    </table>
+
     <div>
-        <button type="button" class="btn btn-secondary my-3 add"
+        <button type="button" class="btn btn-secondary add"
                 th:onclick="|location.href='@{/post/add}'|">글쓰기</button>
     </div>
+
+    <!-- 페이징 -->
+    <div th:if="${!posts.isEmpty()}">
+        <nav    th:with="start=${T(java.lang.Math).floor(posts.number/10)*10 + 1},
+                last=(${start + 9 < posts.totalPages ? start + 9 : posts.totalPages})"
+                style="text-align: center;">
+            <ul class="pagination">
+                <li>
+                    <a class="page-link" th:href="@{/posts(page=1)}" aria-label="First" >
+                        <span aria-hidden="true">First</span>
+                    </a>
+                </li>
+
+                <li th:class="${posts.first} ? 'disabled'">
+                    <a class="page-link" th:href="${posts.first} ? '#' :@{/posts(page=${posts.number})}" aria-label="Previous">
+                        <span aria-hidden="true">&lt;</span>
+                    </a>
+                </li>
+
+                <li th:each="page: ${#numbers.sequence(start, last)}" th:class="${page == posts.number + 1} ? 'active'">
+                    <a class="page-link" th:text="${page}" th:href="@{/posts(page=${page})}"></a>
+                </li>
+
+                <li th:class="${posts.last} ? 'disabled'">
+                    <a class="page-link" th:href="${posts.last} ? '#' : @{/posts(page=${posts.number + 2})}" aria-label="Next">
+                        <span aria-hidden="true">&gt;</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a class="page-link" th:href="@{/posts(page=${posts.totalPages})}" aria-label="Last">
+                        <span aria-hidden="true">Last</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
 
     <div th:replace="fragments/footer :: footer" />
 </div> <!-- /container -->
