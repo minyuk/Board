@@ -28,15 +28,6 @@ public class PostController {
 
     private final PostService postService;
 
-//    @GetMapping("/posts")
-    public String home(@Login User loginUser, @ModelAttribute PostSearch postSearch, Model model) {
-        model.addAttribute("user", loginUser);
-
-        List<Post> posts = postService.findPosts(postSearch);
-        model.addAttribute("posts", posts);
-
-        return "post/postList";
-    }
 
     @GetMapping("/posts")
     public String home(@Login User loginUser, @ModelAttribute PostSearch postSearch,
