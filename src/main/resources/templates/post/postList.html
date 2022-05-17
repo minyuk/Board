@@ -31,8 +31,10 @@
             <button type="submit" class="btn btn-secondary mb-3">검색</button>
         </form>
 
-        <button type="button" class="btn btn-outline-warning">조회순</button>
-        <button type="button" class="btn btn-outline-warning">최신순</button>
+        <div th:if="${!posts.isEmpty()}">
+            <a class="btn btn-outline-warning" th:href="@{/posts(page=${posts.number + 1},searchName=${param.searchName},searchKeyword=${param.searchKeyword},sortType='view')}">조회순</a>
+            <a class="btn btn-outline-warning" th:href="@{/posts(page=${posts.number + 1},searchName=${param.searchName},searchKeyword=${param.searchKeyword},sortType='time')}">최신순</a>
+        </div>
     </div>
     <table class="table table-striped">
         <thead>
@@ -62,29 +64,29 @@
                 style="text-align: center;">
             <ul class="pagination">
                 <li>
-                    <a class="page-link" th:href="@{/posts(page=1,searchName=${param.searchName},searchKeyword=${param.searchKeyword})}" aria-label="First" >
+                    <a class="page-link" th:href="@{/posts(page=1,searchName=${param.searchName},searchKeyword=${param.searchKeyword},sortType=${param.sortType})}" aria-label="First" >
                         <span aria-hidden="true">First</span>
                     </a>
                 </li>
 
                 <li th:class="${posts.first} ? 'disabled'">
-                    <a class="page-link" th:href="${posts.first} ? '#' :@{/posts(page=${posts.number},searchName=${param.searchName},searchKeyword=${param.searchKeyword})}" aria-label="Previous">
+                    <a class="page-link" th:href="${posts.first} ? '#' :@{/posts(page=${posts.number},searchName=${param.searchName},searchKeyword=${param.searchKeyword},sortType=${param.sortType})}" aria-label="Previous">
                         <span aria-hidden="true">&lt;</span>
                     </a>
                 </li>
 
                 <li th:each="page: ${#numbers.sequence(start, last)}" th:class="${page == posts.number + 1} ? 'active'">
-                    <a class="page-link" th:text="${page}" th:href="@{/posts(page=${page},searchName=${param.searchName},searchKeyword=${param.searchKeyword})}"></a>
+                    <a class="page-link" th:text="${page}" th:href="@{/posts(page=${page},searchName=${param.searchName},searchKeyword=${param.searchKeyword},sortType=${param.sortType})}"></a>
                 </li>
 
                 <li th:class="${posts.last} ? 'disabled'">
-                    <a class="page-link" th:href="${posts.last} ? '#' : @{/posts(page=${posts.number + 2},searchName=${param.searchName},searchKeyword=${param.searchKeyword})}" aria-label="Next">
+                    <a class="page-link" th:href="${posts.last} ? '#' : @{/posts(page=${posts.number + 2},searchName=${param.searchName},searchKeyword=${param.searchKeyword},sortType=${param.sortType})}" aria-label="Next">
                         <span aria-hidden="true">&gt;</span>
                     </a>
                 </li>
 
                 <li>
-                    <a class="page-link" th:href="@{/posts(page=${posts.totalPages},searchName=${param.searchName},searchKeyword=${param.searchKeyword})}" aria-label="Last">
+                    <a class="page-link" th:href="@{/posts(page=${posts.totalPages},searchName=${param.searchName},searchKeyword=${param.searchKeyword},sortType=${param.sortType})}" aria-label="Last">
                         <span aria-hidden="true">Last</span>
                     </a>
                 </li>
