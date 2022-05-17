@@ -7,19 +7,16 @@ import minyuk.board.domain.Post;
 import minyuk.board.domain.User;
 import minyuk.board.login.argumentresolver.Login;
 import minyuk.board.repository.PostSearch;
+import minyuk.board.repository.PostSort;
 import minyuk.board.service.PostService;
-import minyuk.board.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @Controller
@@ -30,12 +27,14 @@ public class PostController {
 
 
     @GetMapping("/posts")
-    public String home(@Login User loginUser, @ModelAttribute PostSearch postSearch,
+    public String home(@Login User loginUser,
+                       @ModelAttribute PostSearch postSearch,
+                       @ModelAttribute PostSort postSort,
                        @PageableDefault Pageable pageable,
                        Model model) {
         model.addAttribute("user", loginUser);
 
-        Page<Post> posts = postService.findPosts(postSearch, pageable);
+        Page<Post> posts = postService.findPosts(postSearch, pageable, postSort);
         model.addAttribute("posts", posts);
 
         return "post/postList";

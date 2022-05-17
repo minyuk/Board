@@ -1,5 +1,7 @@
 package minyuk.board.repository;
 
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -53,7 +56,7 @@ public class PostRepository {
 
     }
 
-    public Page<Post> findAll(PostSearch postSearch, Pageable pageable) {
+    public Page<Post> findAll(PostSearch postSearch, Pageable pageable, PostSort postSort) {
 
         JPAQueryFactory query = new JPAQueryFactory(em);
         QPost post = QPost.post;
@@ -64,7 +67,7 @@ public class PostRepository {
                 .from(post)
                 .join(post.user, user)
                 .where(like(postSearch.getSearchName(), postSearch.getSearchKeyword()))
-                .orderBy(post.updateAt.desc())
+                .orderBy(sort(postSort.getSortType()))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -80,15 +83,26 @@ public class PostRepository {
     }
 
     private BooleanExpression like(String name, String keyword) {
-        if (keyword != null && StringUtils.hasText(name)) {
+        if (StringUtils.hasText(keyword) && StringUtils.hasText(name)) {
             if (keyword.equals("name")) {
                 return QUser.user.name.like(name);
             } else if (keyword.equals("title")) {
                 return QPost.post.title.like(name);
             }
         }
-
         return null;
+    }
+
+    private OrderSpecifier<?> sort(String type) {
+        if (StringUtils.hasText(type)) {
+            if (type.equals("view")) {
+                return QPost.post.viewCount.desc();
+            } else if (type.equals("time")) {
+                return QPost.post.updateAt.desc();
+            }
+        }
+
+        return QPost.post.updateAt.desc();
     }
 
 }

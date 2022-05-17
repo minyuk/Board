@@ -5,6 +5,7 @@ import minyuk.board.domain.Post;
 import minyuk.board.domain.User;
 import minyuk.board.repository.PostRepository;
 import minyuk.board.repository.PostSearch;
+import minyuk.board.repository.PostSort;
 import minyuk.board.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -64,11 +65,11 @@ public class PostService {
         return postRepository.findAll(postSearch);
     }
 
-    public Page<Post> findPosts(PostSearch postSearch, Pageable pageable) {
+    public Page<Post> findPosts(PostSearch postSearch, Pageable pageable, PostSort postSort) {
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
         pageable = PageRequest.of(page, 10); // <- Sort 추가
 
-        return postRepository.findAll(postSearch, pageable);
+        return postRepository.findAll(postSearch, pageable, postSort);
     }
 
     public Post findOne(Long postId) {

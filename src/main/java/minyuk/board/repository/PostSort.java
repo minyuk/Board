@@ -3,11 +3,9 @@ package minyuk.board.repository;
 import lombok.Getter;
 import lombok.Setter;
 
-
 @Getter @Setter
-public class PostSearch {
+public class PostSort {
 
-    private String searchName;
-    private String searchKeyword;
+    private String sortType;
 
 }
