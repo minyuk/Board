@@ -79,17 +79,20 @@ class PostServiceTest {
 
     @Test
     public void 게시물검색() throws Exception {
-        /*//given
+        //given
         User user = createUser();
         Post post = createPost("test", "testing...");
         Post post2 = createPost("test2", "testing...");
         Post post3 = createPost("test3", "testing...");
         PostSearch ps = new PostSearch();
-        ps.setUserName("mh");
+        ps.setSearchName("mh");
+        ps.setSearchKeyword("name");
         PostSearch ps2 = new PostSearch();
-        ps2.setTitle(post.getTitle());
+        ps2.setSearchName(post.getTitle());
+        ps2.setSearchKeyword("title");
         PostSearch ps3 = new PostSearch();
-        ps3.setUserName("mmm");
+        ps3.setSearchName("mmm");
+        ps3.setSearchKeyword("name");
 
         //when
         Long postId = postService.uploadPost(user.getId(), post.getTitle(), post.getContents());
@@ -103,7 +106,7 @@ class PostServiceTest {
         //then
         Assertions.assertEquals(3, findPost.size());
         Assertions.assertEquals(1, findPost2.size());
-        Assertions.assertEquals(0, findPost3.size());*/
+        Assertions.assertEquals(0, findPost3.size());
 
      }
 
