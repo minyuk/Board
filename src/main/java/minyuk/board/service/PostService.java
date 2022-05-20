@@ -2,6 +2,7 @@ package minyuk.board.service;
 
 import lombok.RequiredArgsConstructor;
 import minyuk.board.domain.Post;
+import minyuk.board.domain.UploadFile;
 import minyuk.board.domain.User;
 import minyuk.board.repository.PostRepository;
 import minyuk.board.repository.PostSearch;
@@ -26,12 +27,12 @@ public class PostService {
 
     //등록
     @Transactional
-    public Long uploadPost(Long userId, String title, String contents) {
+    public Long uploadPost(Long userId, String title, String contents, List<UploadFile> attachFiles) {
         //엔티티 조회
         User user = userRepository.findOne(userId);
 
         //게시물 생성
-        Post post = Post.createPost(user, title, contents);
+        Post post = Post.createPost(user, title, contents, attachFiles);
 
         //저장
         postRepository.save(post);

@@ -4,19 +4,31 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import minyuk.board.controller.form.PostForm;
 import minyuk.board.domain.Post;
+import minyuk.board.domain.UploadFile;
 import minyuk.board.domain.User;
+import minyuk.board.file.FileStore;
 import minyuk.board.login.argumentresolver.Login;
 import minyuk.board.repository.PostSearch;
 import minyuk.board.repository.PostSort;
 import minyuk.board.service.PostService;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriUtils;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -24,7 +36,7 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
 
     private final PostService postService;
-
+    private final FileStore fileStore;
 
     @GetMapping("/posts")
     public String home(@Login User loginUser,
@@ -46,7 +58,9 @@ public class PostController {
     }
 
     @PostMapping("/post/add")
-    public String addPost(@Login User loginUser, @Validated @ModelAttribute PostForm postForm, BindingResult bindingResult) {
+    public String addPost(@Login User loginUser, @Validated @ModelAttribute PostForm postForm, BindingResult bindingResult) throws IOException {
+
+        List<UploadFile> attachFiles = fileStore.storeFiles(postForm.getAttachFiles());
 
         if (bindingResult.hasErrors()) {
             log.info("errors= {}", bindingResult);
@@ -54,7 +68,7 @@ public class PostController {
         }
 
         //게시물 등록
-        postService.uploadPost(loginUser.getId(), postForm.getTitle(), postForm.getContents());
+        postService.uploadPost(loginUser.getId(), postForm.getTitle(), postForm.getContents(), attachFiles);
 
         return "redirect:/posts";
     }
@@ -90,6 +104,20 @@ public class PostController {
     public String cancelOrder(@PathVariable("postId") Long postId) {
         postService.removePost(postId);
         return "redirect:/posts";
+    }
+
+    @GetMapping("/attach/{uploadFileName}/{storeFileName}")
+    public ResponseEntity<Resource> downloadAttach(@PathVariable String uploadFileName,
+                                                   @PathVariable String storeFileName) throws MalformedURLException {
+
+        UrlResource resource = new UrlResource("file:" + fileStore.getFullPath(storeFileName));
+
+        String encodedUploadFileName = UriUtils.encode(uploadFileName, StandardCharsets.UTF_8);
+        String contentDisPosition = "attachment; filename\"" + encodedUploadFileName + "\"";
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisPosition)
+                .body(resource);
     }
 
 }

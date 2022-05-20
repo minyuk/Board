@@ -35,7 +35,7 @@ class PostServiceTest {
         Post post = createPost("test", "testing...");
 
         //when
-        Long postId = postService.uploadPost(user.getId(), post.getTitle(), post.getContents());
+        Long postId = postService.uploadPost(user.getId(), post.getTitle(), post.getContents(), post.getAttachFiles());
 
         //then
         Post findPost = postRepository.findOne(postId);
@@ -51,7 +51,7 @@ class PostServiceTest {
         Post post = createPost("test", "testing...");
 
         //when
-        Long postId = postService.uploadPost(user.getId(), post.getTitle(), post.getContents());
+        Long postId = postService.uploadPost(user.getId(), post.getTitle(), post.getContents(), post.getAttachFiles());
         postService.updatePost(postId, "test123", "modify");
         Post findPost = postRepository.findOne(postId);
 
@@ -61,20 +61,20 @@ class PostServiceTest {
         assertNotEquals(post.getTitle(), findPost.getTitle());
         assertNotEquals(post.getContents(), findPost.getContents());
         assertNotEquals(findPost.getCreateAt(), findPost.getUpdateAt());
-     }
-     
+    }
+
     @Test
     public void 게시물삭제() throws Exception {
-     //given
-     User user = createUser();
-     Post post = createPost("test", "testing...");
+        //given
+        User user = createUser();
+        Post post = createPost("test", "testing...");
 
-     //when
-     Long postId = postService.uploadPost(user.getId(), post.getTitle(), post.getContents());
-     postService.removePost(postId);
+        //when
+        Long postId = postService.uploadPost(user.getId(), post.getTitle(), post.getContents(), post.getAttachFiles());
+        postService.removePost(postId);
 
-     //then
-     Assertions.assertNull(postRepository.findOne(postId));
+        //then
+        Assertions.assertNull(postRepository.findOne(postId));
     }
 
     @Test
@@ -95,9 +95,9 @@ class PostServiceTest {
         ps3.setSearchKeyword("name");
 
         //when
-        Long postId = postService.uploadPost(user.getId(), post.getTitle(), post.getContents());
-        Long postId2 = postService.uploadPost(user.getId(), post2.getTitle(), post2.getContents());
-        Long postId3 = postService.uploadPost(user.getId(), post3.getTitle(), post3.getContents());
+        Long postId = postService.uploadPost(user.getId(), post.getTitle(), post.getContents(), post.getAttachFiles());
+        Long postId2 = postService.uploadPost(user.getId(), post2.getTitle(), post2.getContents(), post.getAttachFiles());
+        Long postId3 = postService.uploadPost(user.getId(), post3.getTitle(), post3.getContents(), post.getAttachFiles());
         List<Post> findPost = postRepository.findAll(ps);
         List<Post> findPost2 = postRepository.findAll(ps2);
         List<Post> findPost3 = postRepository.findAll(ps3);

@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -22,6 +24,9 @@ public class Post {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<UploadFile> attachFiles = new ArrayList<>();
+
     private String title;
 
     private String contents;
@@ -33,10 +38,12 @@ public class Post {
     private LocalDateTime updateAt;
 
     //==생성 메서드==//
-    public static Post createPost(User user, String title, String contents) {
+    public static Post createPost(User user, String title, String contents, List<UploadFile> attachFiles) {
         Post post = new Post();
         post.setUser(user);
-
+        for (UploadFile attachFile: attachFiles) {
+            post.addAttachFile(attachFile);
+        }
         post.setTitle(title);
         post.setContents(contents);
         post.setViewCount(0L);
@@ -60,6 +67,11 @@ public class Post {
     public void setUser(User user) {
         this.user = user;
         user.getPosts().add(this);
+    }
+
+    public void addAttachFile(UploadFile attachFile) {
+        attachFiles.add(attachFile);
+        attachFile.setPost(this);
     }
 
 }
