@@ -5,13 +5,16 @@
 
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader" />
-    <form action="" th:action th:object="${postForm}" method="post">
+    <form action="" th:action th:object="${postForm}" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <input type="text" th:field="*{title}" class="form-control" placeholder="제목을 입력하세요">
             <div class="field-error" th:errors="*{title}">제목 오류</div>
         </div>
         <div class="form-group">
             <textarea class="form-control" th:field="*{contents}" id="exampleFormControlTextarea1" rows="7" placeholder="내용을 입력하세요."></textarea>
+        </div>
+        <div>
+            <li>첨부파일 <input type="file" multiple="multiple" th:field="*{attachFiles}"></li>
         </div>
         <button type="submit" class="btn btn-secondary my-3 add">등록</button>
     </form>

@@ -12,6 +12,9 @@
     <div class="form-group">
         <textarea class="form-control" th:field="${post.contents}" th:value="${post.contents}" rows="7" readonly></textarea>
     </div>
+    <div>
+        첨부파일: <a th:each="attachFile : ${post.attachFiles}" th:href="|/attach/${attachFile.getUploadFileName()}/${attachFile.getStoreFileName()}|" th:text="${attachFile.getUploadFileName()}" />
+    </div>
 
     <div th:replace="fragments/footer :: footer" />
 </div> <!-- /container -->

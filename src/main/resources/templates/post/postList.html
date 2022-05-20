@@ -31,10 +31,9 @@
             <button type="submit" class="btn btn-secondary mb-3">검색</button>
         </form>
 
-        <div th:if="${!posts.isEmpty()}">
-            <a class="btn btn-outline-warning" th:href="@{/posts(page=${posts.number + 1},searchName=${param.searchName},searchKeyword=${param.searchKeyword},sortType='view')}">조회순</a>
-            <a class="btn btn-outline-warning" th:href="@{/posts(page=${posts.number + 1},searchName=${param.searchName},searchKeyword=${param.searchKeyword},sortType='time')}">최신순</a>
-        </div>
+        <a class="btn btn-outline-warning" th:href="@{/posts(page=${posts.number + 1},searchName=${param.searchName},searchKeyword=${param.searchKeyword},sortType='view')}">조회순</a>
+        <a class="btn btn-outline-warning" th:href="@{/posts(page=${posts.number + 1},searchName=${param.searchName},searchKeyword=${param.searchKeyword},sortType='time')}">최신순</a>
+
     </div>
     <table class="table table-striped">
         <thead>
