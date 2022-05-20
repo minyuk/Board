@@ -112,8 +112,11 @@ public class PostController {
 
         UrlResource resource = new UrlResource("file:" + fileStore.getFullPath(storeFileName));
 
+        log.info("uploadFileName={}", uploadFileName);
         String encodedUploadFileName = UriUtils.encode(uploadFileName, StandardCharsets.UTF_8);
-        String contentDisPosition = "attachment; filename\"" + encodedUploadFileName + "\"";
+        String contentDisPosition = "attachment; filename=\"" + encodedUploadFileName + "\"";
+
+        log.info("contentDisPosition={}", contentDisPosition);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, contentDisPosition)
